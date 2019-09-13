@@ -10,6 +10,8 @@ Input:      inX: vector to compare to existing dataset (1xN)
 Output:     the most popular class label
 
 @author: pbharrin
+
+Latest updated by johnchen5372@gmail.com on Sep 12, 2019
 '''
 from numpy import *
 import operator
@@ -78,6 +80,20 @@ def datingClassTest():
     print("the total error rate is: %f" % (errorCount/float(numTestVecs)))
     print(errorCount)
     
+def classifyPerson():
+    resultList = ['not at all', 'in small doses', 'in large doses']
+    percentTats = float(input(\
+                "percentage of time spent playing video games?"))
+    ffMiles = float(input("frequent filer miles earned per year?"))
+    iceCream = float(input("liters of ice cream consumed per year?"))
+    datingDataMat,datingLabels = file2matrix('datingTestSet2.txt')
+    normMat,ranges,minVals = autoNorm(datingDataMat)
+    inArr = array([ffMiles, percentTats, iceCream])
+    classifierResult = classify0((inArr-\
+                minVals)/ranges,normMat,datingLabels,3)
+    print("You will probably like this person: ",\
+            resultList[classifierResult - 1])
+
 def img2vector(filename):
     returnVect = zeros((1,1024))
     fr = open(filename)
@@ -112,16 +128,3 @@ def handwritingClassTest():
     print("\nthe total number of errors is: %d" % errorCount)
     print("\nthe total error rate is: %f" % (errorCount/float(mTest)))
 
-def classifyPerson():
-    resultList = ['not at all', 'in small doses', 'in large doses']
-    percentTats = float(input(\
-                "percentage of time spent playing video games?"))
-    ffMiles = float(input("frequent filer miles earned per year?"))
-    iceCream = float(input("liters of ice cream consumed per year?"))
-    datingDataMat,datingLabels = file2matrix('datingTestSet2.txt')
-    normMat,ranges,minVals = autoNorm(datingDataMat)
-    inArr = array([ffMiles, percentTats, iceCream])
-    classifierResult = classify0((inArr-\
-                minVals)/ranges,normMat,datingLabels,3)
-    print("You will probably like this person: ",\
-            resultList[classifierResult - 1])
