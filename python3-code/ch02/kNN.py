@@ -65,7 +65,7 @@ def autoNorm(dataSet):
     return normDataSet, ranges, minVals
    
 def datingClassTest():
-    hoRatio = 0.50      #hold out 10%
+    hoRatio = 0.10      #hold out 10%
     datingDataMat,datingLabels = file2matrix('datingTestSet2.txt')       #load data setfrom file
     normMat, ranges, minVals = autoNorm(datingDataMat)
     m = normMat.shape[0]
@@ -111,3 +111,17 @@ def handwritingClassTest():
         if (classifierResult != classNumStr): errorCount += 1.0
     print("\nthe total number of errors is: %d" % errorCount)
     print("\nthe total error rate is: %f" % (errorCount/float(mTest)))
+
+def classifyPerson():
+    resultList = ['not at all', 'in small doses', 'in large doses']
+    percentTats = float(input(\
+                "percentage of time spent playing video games?"))
+    ffMiles = float(input("frequent filer miles earned per year?"))
+    iceCream = float(input("liters of ice cream consumed per year?"))
+    datingDataMat,datingLabels = file2matrix('datingTestSet2.txt')
+    normMat,ranges,minVals = autoNorm(datingDataMat)
+    inArr = array([ffMiles, percentTats, iceCream])
+    classifierResult = classify0((inArr-\
+                minVals)/ranges,normMat,datingLabels,3)
+    print("You will probably like this person: ",\
+            resultList[classifierResult - 1])
